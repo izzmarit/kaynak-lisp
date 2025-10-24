@@ -41,14 +41,14 @@
     (regapp *KAYNAK-APP-ID*)
   )
   
-  ;; Katman yoksa olustur
+  ;; Katman yoksa olustur (sari renk)
   (if (not (tblsearch "LAYER" "KAYNAK_SYM"))
     (entmake '((0 . "LAYER")
                (100 . "AcDbSymbolTableRecord")
                (100 . "AcDbLayerTableRecord")
                (2 . "KAYNAK_SYM")
                (70 . 0)
-               (62 . 5)
+               (62 . 2)
                (6 . "CONTINUOUS")))
   )
   
@@ -278,7 +278,7 @@
   )
   
   (setq ref-baslangic pt2)
-  (setq ref-bitis (polar ref-baslangic ref-yon (* scl 30.0))) ; 30mm referans cizgisi
+  (setq ref-bitis (polar ref-baslangic ref-yon (* scl 0.5))) ; 0.5mm referans cizgisi - SABIT
   
   ;; 1. LEADER (OK) OLUSTUR - ENTMAKE ile
   (setq ent (entmakex
@@ -356,14 +356,14 @@
   
   ;; 5. OZEL SEMBOLLER
   
-  ;; CEVRE KAYNAK DAIRESI (ok noktasinda)
+  ;; CEVRE KAYNAK DAIRESI (leader yatay baslangic noktasinda)
   (if (= *CEVRE-FLAG* "1")
-    (setq obje-listesi (append obje-listesi (kaynak-cevre-ekle pt1 scl)))
+    (setq obje-listesi (append obje-listesi (kaynak-cevre-ekle pt2 scl)))
   )
   
-  ;; SANTIYE BAYRAGI
+  ;; SANTIYE BAYRAGI (cevre kaynak dairesiyle ayni konumda)
   (if (= *SANTIYE-FLAG* "1")
-    (setq obje-listesi (append obje-listesi (kaynak-bayrak-ekle ref-bitis ref-yon scl)))
+    (setq obje-listesi (append obje-listesi (kaynak-bayrak-ekle pt2 ref-yon scl)))
   )
   
   ;; TAM NUFUZIYET (F.P.)
@@ -408,13 +408,13 @@
   ent-listesi
 )
 
-;; FILLET (Kose kaynagi) - Ucgen
+;; FILLET (Kose kaynagi) - Ucgen (1.5x buyutulmus)
 (defun kaynak-fillet (pt yon scl ust-taraf / p1 p2 p3 ent)
-  (setq p1 (polar pt yon (* scl -2.0)))
-  (setq p2 (polar p1 yon (* scl 4.0)))
+  (setq p1 (polar pt yon (* scl -3.0)))
+  (setq p2 (polar p1 yon (* scl 6.0)))
   (if ust-taraf
-    (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 4.0)))
-    (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 4.0)))
+    (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 6.0)))
+    (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 6.0)))
   )
   
   ;; Ucgen ciz - LWPOLYLINE olarak
@@ -433,19 +433,19 @@
   (if ent (list ent) nil)
 )
 
-;; V-GROOVE
+;; V-GROOVE (1.5x buyutulmus)
 (defun kaynak-vgroove (pt yon scl ust-taraf / p1 p2 p3 ent-listesi ent)
   (setq p1 pt)
   (setq ent-listesi '())
-  
+
   (if ust-taraf
     (progn
-      (setq p2 (polar p1 (+ yon (* pi 0.833)) (* scl 3.0))) ; 150 derece
-      (setq p3 (polar p1 (+ yon (* pi 0.167)) (* scl 3.0))) ; 30 derece
+      (setq p2 (polar p1 (+ yon (* pi 0.833)) (* scl 4.5))) ; 150 derece
+      (setq p3 (polar p1 (+ yon (* pi 0.167)) (* scl 4.5))) ; 30 derece
     )
     (progn
-      (setq p2 (polar p1 (- yon (* pi 0.833)) (* scl 3.0)))
-      (setq p3 (polar p1 (- yon (* pi 0.167)) (* scl 3.0)))
+      (setq p2 (polar p1 (- yon (* pi 0.833)) (* scl 4.5)))
+      (setq p3 (polar p1 (- yon (* pi 0.167)) (* scl 4.5)))
     )
   )
   
@@ -476,19 +476,19 @@
   ent-listesi
 )
 
-;; BEVEL
+;; BEVEL (1.5x buyutulmus)
 (defun kaynak-bevel (pt yon scl ust-taraf / p1 p2 p3 ent-listesi ent)
   (setq p1 pt)
   (setq ent-listesi '())
-  
+
   (if ust-taraf
     (progn
-      (setq p2 (polar p1 (+ yon (* pi 0.75)) (* scl 3.0))) ; 135 derece
-      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 3.0)))   ; 90 derece
+      (setq p2 (polar p1 (+ yon (* pi 0.75)) (* scl 4.5))) ; 135 derece
+      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 4.5)))   ; 90 derece
     )
     (progn
-      (setq p2 (polar p1 (- yon (* pi 0.75)) (* scl 3.0)))
-      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 3.0)))
+      (setq p2 (polar p1 (- yon (* pi 0.75)) (* scl 4.5)))
+      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 4.5)))
     )
   )
   
@@ -519,19 +519,19 @@
   ent-listesi
 )
 
-;; SQUARE
+;; SQUARE (1.5x buyutulmus)
 (defun kaynak-square (pt yon scl ust-taraf / p1 p2 p3 p4 ent)
-  (setq p1 (polar pt yon (* scl -1.5)))
-  (setq p2 (polar pt yon (* scl 1.5)))
-  
+  (setq p1 (polar pt yon (* scl -2.25)))
+  (setq p2 (polar pt yon (* scl 2.25)))
+
   (if ust-taraf
     (progn
-      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 3.0)))
-      (setq p4 (polar p2 (+ yon (/ pi 2)) (* scl 3.0)))
+      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 4.5)))
+      (setq p4 (polar p2 (+ yon (/ pi 2)) (* scl 4.5)))
     )
     (progn
-      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 3.0)))
-      (setq p4 (polar p2 (- yon (/ pi 2)) (* scl 3.0)))
+      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 4.5)))
+      (setq p4 (polar p2 (- yon (/ pi 2)) (* scl 4.5)))
     )
   )
   
@@ -552,22 +552,22 @@
   (if ent (list ent) nil)
 )
 
-;; U-GROOVE
+;; U-GROOVE (1.5x buyutulmus)
 (defun kaynak-ugroove (pt yon scl ust-taraf / p1 p2 p3 p4 merkez ent-listesi ent)
   (setq ent-listesi '())
-  (setq p1 (polar pt yon (* scl -1.5)))
-  (setq p2 (polar pt yon (* scl 1.5)))
-  
+  (setq p1 (polar pt yon (* scl -2.25)))
+  (setq p2 (polar pt yon (* scl 2.25)))
+
   (if ust-taraf
     (progn
-      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 1.0)))
-      (setq p4 (polar p2 (+ yon (/ pi 2)) (* scl 1.0)))
-      (setq merkez (polar pt (+ yon (/ pi 2)) (* scl 1.5)))
+      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 1.5)))
+      (setq p4 (polar p2 (+ yon (/ pi 2)) (* scl 1.5)))
+      (setq merkez (polar pt (+ yon (/ pi 2)) (* scl 2.25)))
     )
     (progn
-      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 1.0)))
-      (setq p4 (polar p2 (- yon (/ pi 2)) (* scl 1.0)))
-      (setq merkez (polar pt (- yon (/ pi 2)) (* scl 1.5)))
+      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 1.5)))
+      (setq p4 (polar p2 (- yon (/ pi 2)) (* scl 1.5)))
+      (setq merkez (polar pt (- yon (/ pi 2)) (* scl 2.25)))
     )
   )
   
@@ -591,7 +591,7 @@
       '(8 . "KAYNAK_SYM")
       '(100 . "AcDbCircle")
       (cons 10 merkez)
-      (cons 40 (* scl 1.5))
+      (cons 40 (* scl 2.25))
       '(100 . "AcDbArc")
       (cons 50 (angle merkez p3))
       (cons 51 (angle merkez p4))
@@ -613,20 +613,20 @@
   ent-listesi
 )
 
-;; J-GROOVE
+;; J-GROOVE (1.5x buyutulmus)
 (defun kaynak-jgroove (pt yon scl ust-taraf / p1 p2 p3 merkez ent-listesi ent)
   (setq ent-listesi '())
-  (setq p1 (polar pt yon (* scl -1.5)))
-  (setq p2 (polar pt yon (* scl 1.5)))
-  
+  (setq p1 (polar pt yon (* scl -2.25)))
+  (setq p2 (polar pt yon (* scl 2.25)))
+
   (if ust-taraf
     (progn
-      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 3.0)))
-      (setq merkez (polar p2 (+ yon (/ pi 2)) (* scl 1.5)))
+      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 4.5)))
+      (setq merkez (polar p2 (+ yon (/ pi 2)) (* scl 2.25)))
     )
     (progn
-      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 3.0)))
-      (setq merkez (polar p2 (- yon (/ pi 2)) (* scl 1.5)))
+      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 4.5)))
+      (setq merkez (polar p2 (- yon (/ pi 2)) (* scl 2.25)))
     )
   )
   
@@ -650,7 +650,7 @@
       '(8 . "KAYNAK_SYM")
       '(100 . "AcDbCircle")
       (cons 10 merkez)
-      (cons 40 (* scl 1.5))
+      (cons 40 (* scl 2.25))
       '(100 . "AcDbArc")
       (cons 50 (angle merkez p3))
       (cons 51 (angle merkez p2))
@@ -660,19 +660,19 @@
   ent-listesi
 )
 
-;; PLUG
+;; PLUG (1.5x buyutulmus)
 (defun kaynak-plug (pt yon scl ust-taraf / p1 p2 p3 p4 ent)
-  (setq p1 (polar pt yon (* scl -2.5)))
-  (setq p2 (polar pt yon (* scl 2.5)))
-  
+  (setq p1 (polar pt yon (* scl -3.75)))
+  (setq p2 (polar pt yon (* scl 3.75)))
+
   (if ust-taraf
     (progn
-      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 2.5)))
-      (setq p4 (polar p2 (+ yon (/ pi 2)) (* scl 2.5)))
+      (setq p3 (polar p1 (+ yon (/ pi 2)) (* scl 3.75)))
+      (setq p4 (polar p2 (+ yon (/ pi 2)) (* scl 3.75)))
     )
     (progn
-      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 2.5)))
-      (setq p4 (polar p2 (- yon (/ pi 2)) (* scl 2.5)))
+      (setq p3 (polar p1 (- yon (/ pi 2)) (* scl 3.75)))
+      (setq p4 (polar p2 (- yon (/ pi 2)) (* scl 3.75)))
     )
   )
   
@@ -695,19 +695,19 @@
 ;;; OLCU METNI VE KONTUR
 ;;;========================================================================
 
-;; Olcu metni ekle
+;; Olcu metni ekle (1.5x buyutulmus)
 (defun kaynak-olcu-metni-ekle (pt yon scl olcu-str ust-taraf / txt-pt txt-aci ent)
   (if ust-taraf
-    (setq txt-pt (polar pt (+ yon (/ pi 2)) (* scl 5.0)))
-    (setq txt-pt (polar pt (- yon (/ pi 2)) (* scl 5.0)))
+    (setq txt-pt (polar pt (+ yon (/ pi 2)) (* scl 7.5)))
+    (setq txt-pt (polar pt (- yon (/ pi 2)) (* scl 7.5)))
   )
-  
+
   ;; Metin acisi
   (if (and (> yon (/ pi 2)) (< yon (* 1.5 pi)))
     (setq txt-aci pi)
     (setq txt-aci 0)
   )
-  
+
   ;; TEXT olustur
   (setq ent (entmakex
     (list
@@ -717,7 +717,7 @@
       '(100 . "AcDbText")
       (cons 10 txt-pt)
       (cons 11 txt-pt)
-      (cons 40 (* scl 2.5))  ; Yukseklik
+      (cons 40 (* scl 3.75))  ; Yukseklik (2.5 * 1.5)
       (cons 1 olcu-str)       ; Metin
       (cons 50 txt-aci)       ; Aci
       '(41 . 1.0)             ; Genislik faktoru
@@ -730,15 +730,15 @@
   (if ent (list ent) nil)
 )
 
-;; Kontur ekle
+;; Kontur ekle (1.5x buyutulmus)
 (defun kaynak-kontur-ekle (pt yon scl kontur yuzey ust-taraf / kont-pt kont-listesi txt-pt ent)
   (setq kont-listesi '())
-  
+
   (if ust-taraf
-    (setq kont-pt (polar pt (+ yon (/ pi 2)) (* scl 7.5)))
-    (setq kont-pt (polar pt (- yon (/ pi 2)) (* scl 7.5)))
+    (setq kont-pt (polar pt (+ yon (/ pi 2)) (* scl 11.25)))
+    (setq kont-pt (polar pt (- yon (/ pi 2)) (* scl 11.25)))
   )
-  
+
   (cond
     ;; DUZ
     ((= kontur "1")
@@ -748,8 +748,8 @@
          '(100 . "AcDbEntity")
          '(8 . "KAYNAK_SYM")
          '(100 . "AcDbLine")
-         (cons 10 (polar kont-pt yon (* scl -2.5)))
-         (cons 11 (polar kont-pt yon (* scl 2.5)))
+         (cons 10 (polar kont-pt yon (* scl -3.75)))
+         (cons 11 (polar kont-pt yon (* scl 3.75)))
        )))
      (if ent (setq kont-listesi (list ent)))
     )
@@ -763,9 +763,9 @@
          '(8 . "KAYNAK_SYM")
          '(100 . "AcDbCircle")
          (cons 10 (if ust-taraf
-                    (polar kont-pt (- yon (/ pi 2)) (* scl 1.5))
-                    (polar kont-pt (+ yon (/ pi 2)) (* scl 1.5))))
-         (cons 40 (* scl 3.0))
+                    (polar kont-pt (- yon (/ pi 2)) (* scl 2.25))
+                    (polar kont-pt (+ yon (/ pi 2)) (* scl 2.25))))
+         (cons 40 (* scl 4.5))
          '(100 . "AcDbArc")
          (cons 50 (if ust-taraf 
                     (- yon (* pi 0.333))
@@ -786,9 +786,9 @@
          '(8 . "KAYNAK_SYM")
          '(100 . "AcDbCircle")
          (cons 10 (if ust-taraf
-                    (polar kont-pt (+ yon (/ pi 2)) (* scl 1.5))
-                    (polar kont-pt (- yon (/ pi 2)) (* scl 1.5))))
-         (cons 40 (* scl 3.0))
+                    (polar kont-pt (+ yon (/ pi 2)) (* scl 2.25))
+                    (polar kont-pt (- yon (/ pi 2)) (* scl 2.25))))
+         (cons 40 (* scl 4.5))
          '(100 . "AcDbArc")
          (cons 50 (if ust-taraf 
                     (+ yon (* pi 0.667))
@@ -805,10 +805,10 @@
   (if (/= yuzey "0")
     (progn
       (if ust-taraf
-        (setq txt-pt (polar kont-pt (+ yon (/ pi 2)) (* scl 2.5)))
-        (setq txt-pt (polar kont-pt (- yon (/ pi 2)) (* scl 2.5)))
+        (setq txt-pt (polar kont-pt (+ yon (/ pi 2)) (* scl 3.75)))
+        (setq txt-pt (polar kont-pt (- yon (/ pi 2)) (* scl 3.75)))
       )
-      
+
       (setq ent (entmakex
         (list
           '(0 . "TEXT")
@@ -817,7 +817,7 @@
           '(100 . "AcDbText")
           (cons 10 txt-pt)
           (cons 11 txt-pt)
-          (cons 40 (* scl 2.0))
+          (cons 40 (* scl 3.0))
           (cons 1 (nth (atoi yuzey) '("" "G" "M" "C" "R" "H" "P")))
           '(50 . 0)
           '(72 . 1)
@@ -834,7 +834,7 @@
 ;;; OZEL SEMBOLLER - DUZELTILMIS
 ;;;========================================================================
 
-;; CEVRE KAYNAK DAIRESI (ok basinda)
+;; CEVRE KAYNAK DAIRESI (leader yatay baslangic noktasinda)
 (defun kaynak-cevre-ekle (pt scl / ent)
   (setq ent (entmakex
     (list
@@ -843,7 +843,7 @@
       '(8 . "KAYNAK_SYM")
       '(100 . "AcDbCircle")
       (cons 10 pt)
-      (cons 40 (* scl 2.5))
+      (cons 40 (* scl 2.0)) ; 0.8 oraninda kucultulmus (2.5 * 0.8)
     )))
   (if ent (list ent) nil)
 )
@@ -851,9 +851,9 @@
 ;; SANTIYE KAYNAGI BAYRAGI - DUZELTILMIS
 (defun kaynak-bayrak-ekle (pt yon scl / bayrak-pt1 bayrak-pt2 bayrak-pt3 ent-listesi ent)
   (setq ent-listesi '())
-  
-  ;; Bayrak direği üst noktası
-  (setq bayrak-pt1 (polar pt (+ yon (/ pi 2)) (* scl 8.0)))
+
+  ;; Bayrak direği üst noktası (1.25 oraninda uzatilmis)
+  (setq bayrak-pt1 (polar pt (+ yon (/ pi 2)) (* scl 10.0)))
   
   ;; Bayrak uç noktaları
   (setq bayrak-pt2 (polar bayrak-pt1 yon (* scl 4.0)))
@@ -888,18 +888,18 @@
   ent-listesi
 )
 
-;; TAM NUFUZIYET SEMBOLU - F.P. YAZIYI ICEREN DAIRE
+;; TAM NUFUZIYET SEMBOLU - F.P. YAZIYI ICEREN DAIRE (1.5x buyutulmus)
 (defun kaynak-tam-nufuz-ekle (pt yon scl / fp-pt daire-pt txt-aci ent-listesi ent)
   (setq ent-listesi '())
-  
+
   ;; Pozisyon hesapla
   (if (= yon 0)
-    (setq fp-pt (polar pt yon (* scl 7.0)))
-    (setq fp-pt (polar pt yon (* scl -7.0)))
+    (setq fp-pt (polar pt yon (* scl 10.5)))
+    (setq fp-pt (polar pt yon (* scl -10.5)))
   )
-  
-  (setq daire-pt (polar fp-pt (+ yon (/ pi 2)) (* scl 5.0)))
-  
+
+  (setq daire-pt (polar fp-pt (+ yon (/ pi 2)) (* scl 7.5)))
+
   ;; Daire ciz
   (setq ent (entmakex
     (list
@@ -908,16 +908,16 @@
       '(8 . "KAYNAK_SYM")
       '(100 . "AcDbCircle")
       (cons 10 daire-pt)
-      (cons 40 (* scl 2.5))
+      (cons 40 (* scl 3.75))
     )))
   (if ent (setq ent-listesi (append ent-listesi (list ent))))
-  
+
   ;; F.P. metni
   (if (and (> yon (/ pi 2)) (< yon (* 1.5 pi)))
     (setq txt-aci pi)
     (setq txt-aci 0)
   )
-  
+
   (setq ent (entmakex
     (list
       '(0 . "TEXT")
@@ -926,7 +926,7 @@
       '(100 . "AcDbText")
       (cons 10 daire-pt)
       (cons 11 daire-pt)
-      (cons 40 (* scl 1.8))
+      (cons 40 (* scl 2.7))
       (cons 1 "F.P.")
       (cons 50 txt-aci)
       '(72 . 1)
@@ -937,18 +937,18 @@
   ent-listesi
 )
 
-;; NDT SEMBOLU - NDT YAZIYI ICEREN DAIRE
+;; NDT SEMBOLU - NDT YAZIYI ICEREN DAIRE (1.5x buyutulmus)
 (defun kaynak-ndt-ekle (pt yon scl / ndt-pt daire-pt txt-aci ent-listesi ent)
   (setq ent-listesi '())
-  
+
   ;; Pozisyon hesapla
   (if (= yon 0)
-    (setq ndt-pt (polar pt yon (* scl 14.0)))
-    (setq ndt-pt (polar pt yon (* scl -14.0)))
+    (setq ndt-pt (polar pt yon (* scl 21.0)))
+    (setq ndt-pt (polar pt yon (* scl -21.0)))
   )
-  
-  (setq daire-pt (polar ndt-pt (+ yon (/ pi 2)) (* scl 5.0)))
-  
+
+  (setq daire-pt (polar ndt-pt (+ yon (/ pi 2)) (* scl 7.5)))
+
   ;; Daire ciz
   (setq ent (entmakex
     (list
@@ -957,16 +957,16 @@
       '(8 . "KAYNAK_SYM")
       '(100 . "AcDbCircle")
       (cons 10 daire-pt)
-      (cons 40 (* scl 2.5))
+      (cons 40 (* scl 3.75))
     )))
   (if ent (setq ent-listesi (append ent-listesi (list ent))))
-  
+
   ;; NDT metni
   (if (and (> yon (/ pi 2)) (< yon (* 1.5 pi)))
     (setq txt-aci pi)
     (setq txt-aci 0)
   )
-  
+
   (setq ent (entmakex
     (list
       '(0 . "TEXT")
@@ -975,7 +975,7 @@
       '(100 . "AcDbText")
       (cons 10 daire-pt)
       (cons 11 daire-pt)
-      (cons 40 (* scl 1.5))
+      (cons 40 (* scl 2.25))
       (cons 1 "NDT")
       (cons 50 txt-aci)
       '(72 . 1)
@@ -1000,11 +1000,11 @@
     (setq txt-aci 0)
   )
   
-  ;; WPS KUTUSU
+  ;; WPS KUTUSU (1.5x buyutulmus)
   (if (/= *WPS-NO* "")
     (progn
-      (setq kuyruk-pt (polar ref-bitis yon (* scl 3.0)))
-      
+      (setq kuyruk-pt (polar ref-bitis yon (* scl 4.5)))
+
       ;; Kuyruk cizgileri
       (setq ent (entmakex
         (list
@@ -1013,10 +1013,10 @@
           '(8 . "KAYNAK_SYM")
           '(100 . "AcDbLine")
           (cons 10 ref-bitis)
-          (cons 11 (polar kuyruk-pt (+ yon (/ pi 4)) (* scl 2.5)))
+          (cons 11 (polar kuyruk-pt (+ yon (/ pi 4)) (* scl 3.75)))
         )))
       (if ent (setq ent-listesi (append ent-listesi (list ent))))
-      
+
       (setq ent (entmakex
         (list
           '(0 . "LINE")
@@ -1024,19 +1024,19 @@
           '(8 . "KAYNAK_SYM")
           '(100 . "AcDbLine")
           (cons 10 ref-bitis)
-          (cons 11 (polar kuyruk-pt (- yon (/ pi 4)) (* scl 2.5)))
+          (cons 11 (polar kuyruk-pt (- yon (/ pi 4)) (* scl 3.75)))
         )))
       (if ent (setq ent-listesi (append ent-listesi (list ent))))
-      
+
       ;; WPS kutusu
-      (setq txt-pt (polar kuyruk-pt yon (* scl 5.0)))
-      
+      (setq txt-pt (polar kuyruk-pt yon (* scl 7.5)))
+
       ;; Kutu kose noktalari
-      (setq kutu-p1 (polar txt-pt (+ yon pi) (* scl 3.0)))
-      (setq kutu-p1 (polar kutu-p1 (+ yon (/ pi 2)) (* scl 2.5)))
-      (setq kutu-p2 (polar kutu-p1 yon (* scl 6.0)))
-      (setq kutu-p3 (polar kutu-p2 (- yon (/ pi 2)) (* scl 5.0)))
-      (setq kutu-p4 (polar kutu-p1 (- yon (/ pi 2)) (* scl 5.0)))
+      (setq kutu-p1 (polar txt-pt (+ yon pi) (* scl 4.5)))
+      (setq kutu-p1 (polar kutu-p1 (+ yon (/ pi 2)) (* scl 3.75)))
+      (setq kutu-p2 (polar kutu-p1 yon (* scl 9.0)))
+      (setq kutu-p3 (polar kutu-p2 (- yon (/ pi 2)) (* scl 7.5)))
+      (setq kutu-p4 (polar kutu-p1 (- yon (/ pi 2)) (* scl 7.5)))
       
       ;; Kutu ciz
       (setq ent (entmakex
@@ -1054,7 +1054,7 @@
         )))
       (if ent (setq ent-listesi (append ent-listesi (list ent))))
       
-      ;; WPS metni
+      ;; WPS metni (prefix kaldirildi, 1.5x buyutuldu)
       (setq ent (entmakex
         (list
           '(0 . "TEXT")
@@ -1063,8 +1063,8 @@
           '(100 . "AcDbText")
           (cons 10 txt-pt)
           (cons 11 txt-pt)
-          (cons 40 (* scl 2.0))
-          (cons 1 (strcat "WPS:" *WPS-NO*))
+          (cons 40 (* scl 3.0))
+          (cons 1 *WPS-NO*)
           (cons 50 txt-aci)
           '(72 . 1)
           '(73 . 2)
