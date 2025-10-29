@@ -1,0 +1,48 @@
+türkçe yanıt ver
+verdiğim lisp kodlarını derin analiz yaparak incele.
+bu kodu yeniden düzenleyerek yazmanı istiyorum
+oluşturman gereken şekli dxf te detaylı olarak veriyorum
+DXF'deki tüm LINE, CIRCLE, TEXT, LWPOLYLINE entity'lerini koordinatlarıyla birlikte çıkar
+Python scripti yazıp tüm verileri yapılandırılmış şekilde çıkar
+Sonra bu verilere göre LISP kodunu yaz
+
+leader çizgisi oluşturulurken ilk önce okun konulacağı kısım seçiliyor sonra yatay kısmının çizilmeye başlanacağı yer seçiliyor. leader çizgisinin yatay bölümü herzaman 0.5mm olarak sabit olmalı.
+leader çizgisinin bitiminden hemen sonra yatay ayrım çizgisi çiziliyor. bu çizginin sonuna wps no bölümü,f.p. bölümü ve ndt bölümü geliyor
+yatay ayrım çigisinin üstünde ve altında kaynak sembol ve bilgileri olacak.
+dxf dosyasını derin analiz yap. ve buradaki ölçülere, verdiğim bilgilere göre çizimi yaptır.
+bu dosyalardaki çizimin aynısını istiyorum. yorum katma istediğimi ver. üçgen, yay vs. hepsi benim verdiğim ölçü ve konumlarda olacak!!!
+bu lisp i oluştur
+
+
+bu lisp i düzenlemeni istiyorum
+
+svg dosyasında her kaynak için örnekler mevcut. bu dosyayı da derin analiz yapıp incele
+
+leader bitiş noktası "pt2" belirlendiğinde, leader de oluşturulan 2,5mm uzunluğunda yatay bir çizgi var, bu çizgi 0,5mm olmalı.
+
+referans çizgisi ölçüsü sabit 0.5mm olmamalı. 24mm olmalı, diğer çizgiler gibi ölçeğe göre değişebilmeli. bu çizgi leader bitiminden hemen sonra başlayan çizgi.
+
+tam nüfuziyet sembolü ve ndt sembolü, referans çizgisi ile aynı eksende olmalı. wps kutusundan sonra yanyana konumlandırılmalı
+
+kaynak şekillerinin konumu;
+referans çizgisinden 0,5mm üstünde ve altında konumlanmalı. referans çizgisine değmemeli.
+referans çizgisinin başladığı "pt2" konumundan 12,5mm sağda olmalı. (yöne göre sol olabilir)
+kontur sembollerinin konumu kaynak şekillerinin üzerinde olmalı.
+kontur yayları(iç bombe ve dış bombe) 4,5mm radüs ve 85 derecelik bir yay olmalı
+
+
+ölçü yazısının merkezi, referans çizgisinin başladığı "pt2" konumundan 6mm sağda olmalı. (yöne göre sol olabilir)
+ölçü yazısının merkezi, referans çizgisinin üzerinde 3mm olmalı
+
+şantiye bayrağının direk boyutu 15mm ye çıkarılmalı.
+
+
+
+kaynak şekillerinin konumu;
+3mm daha sağ tarafa kaydırılmalı (yöne göre sol olabilir)
+
+tam nüfuziyet sembolü ve ndt sembolü 11mm sağa kaydırılmalı (yöne göre sol olabilir)
+
+bunları yapmak için hangi bölümler düzeltilmeli
+
+
