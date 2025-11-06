@@ -1,0 +1,56 @@
+herzaman Türkçe yanıt ver
+verdiğim lisp kodunu derinlemesine analiz et. hiçbir satırı atlama. bu kodun ne yaptığını simüle et.
+kodun çalışma yapısını çizimleri yönleri vs hiç bozmadan değişiklik yapacaksın, bunun için kodu tam anlaman gerekli
+lisp çalıştırılıp bir kaynak çizdirildikten sonra, oluşan çizime çift tıklayıp edit yapmak istediğimde yapamıyorum. her yazıyı text olarak, çizgileri line vs şeklinde görüyor.
+ben çift tıklayıp edit yapabilmek için yine lisp penceresinin açılıp buradan istediğim şeyleri değiştirebilmek istiyorum.
+GROUP sistemi ile yapmak istiyorum
+bunun için yapılması gerekenlerin listesini çıkart, benim onayımı aldıktan sonra değişmesi gereken kodları oluşturacaksın
+
+
+bunu uygularken mleader okunu blok dışında bırakmak gerekli, oku istediğim konuma getirebilmeliyim. değiştirilmesi ve eklenmesi gereken fonksiyonları vereceksin. kodun tamamını değil. 
+hangi fonksiyonu tam olarak nereye eklemem gerektiğini tam olarak belirteceksin
+
+ayrıca dcl dosyasında düzenleme yapmanı istiyorum. kullanışlı ve daha kullanıcı dostu bir düzen istiyorum. 
+birtane önizleme penceresi eklenecek, girilen değerler bu önizleme penceresinde kaynak simgesinin çizimde nasıl görüneceğini gösterecek.
+
+
+herzaman Türkçe yanıt ver
+verdiğim lisp kodunun her satırını oku. çizdirilen tüm şekil ve ölçülerin vector_image kodlarını oluşturacaksın. her şeklin nasıl çizildiğini tüm komutları kontrol ederek oluştur
+
+herzaman Türkçe yanıt ver
+autocad 2025 LT kullanıyorum
+sana vereceğim lisp kodunu tam analiz ederek, hiçbir eksik fonksiyon ve eksik çalışma biçimi kalmadan yeniden yazmanı istiyorum. fazla kodları belirleyerek daha doğru bir kod dosyası istiyorum
+ayrıca dcl dosyasında düzenleme yapmanı istiyorum. kullanışlı ve daha kullanıcı dostu bir düzen istiyorum. 
+birtane önizleme penceresi eklenecek, girilen değerler bu önizleme penceresinde kaynak simgesinin çizimde nasıl görüneceğini gösterecek. vector image şeklinde
+dcl dosyasında kaynak şekilleri, yüzey bitirme harfleri, konturler için kısa açıklamalar mutlaka olmalı. detaylı bir pencere istiyorum. ayrıca türkçe karakter kullanılmamalı ö,ç,ü,ş gibi
+
+
+
+önizleme bölümü parametreleri değiştirdiğimde hemen güncellenme sorunu düzeldi fakat;
+
+wps numarası bölümüne harf girdiğimde bunu önizlemede göremiyorum
+
+girilen ölçülerin, wps numarasının,NDT, F.P., yüzey bitirme harflerinin puntosunu biraz daha büyütmen gerekli (lisp ile orantılı)
+
+metod kaynak seçildiğinde "z" şeklinin çizimi ve konumu tam lisp te olduğu gibi olmalı
+metod kaynak seçildiğinde üst taraf ve alt taraf için ayrı ölçüler giriliyor şuanda alt tarafın ölçülerini önizlemede göstermiyor.
+
+
+wps numarası bölümüne harf girdiğimde bunu önizlemede göremiyorum, bu sorun devam ediyor. yazılar tam wps kutusunun ortasında olmalı
+F.P. harflerinin puntosunu biraz daha büyütmen gerekli (lisp ile orantılı) yazılar tam kutunun ortasında olmalı
+NDT. harflerinin puntosunu biraz daha büyütmen gerekli (lisp ile orantılı) yazılar tam kutunun ortasında olmalı
+NDT kutusunun boyutu F.P. kutusu ile aynı olmalı
+yüzey bitirme harflerinin puntosunu biraz daha büyütmen gerekli (lisp ile orantılı)
+
+metod kaynak seçildiğinde "z" şeklinin çizimi, boyutu ve konumu tam lisp te olduğu gibi olmalı, bu da doğru olmamış. kod yapısını iyi incele
+
+metod kaynak seçildiğinde ölçülerin konumunu da doğru olarak yerleştir. "z" çizimi ile tam uyumlu görünmeli
+
+
+
+
+
+
+
+
+
